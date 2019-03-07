@@ -1,14 +1,14 @@
-package db;
+package db.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.media.Image;
 
-@Entity()
+@Entity
 public class Show {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
     private String name;

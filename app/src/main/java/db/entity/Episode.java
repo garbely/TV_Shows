@@ -1,4 +1,4 @@
-package db;
+package db.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
                                     childColumns = "showId"))
 public class Episode {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
     private int number;
