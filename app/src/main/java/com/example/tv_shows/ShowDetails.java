@@ -15,7 +15,7 @@ public class ShowDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_details2);
+        setContentView(R.layout.activity_show_details);
 
         listview = (ListView) findViewById(R.id.listview);
 
@@ -28,7 +28,7 @@ public class ShowDetails extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myintent = new Intent(view.getContext(), ShowModify.class);
+                Intent myintent = new Intent(view.getContext(), EpisodeDetails.class);
                 startActivityForResult(myintent, 0);
             }
         });
