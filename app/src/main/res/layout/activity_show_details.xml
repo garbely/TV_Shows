@@ -2,78 +2,64 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-<android.support.constraint.ConstraintLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ShowDetails">
-
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/image"
-        android:contentDescription="@string/app_name"
-        android:background="@drawable/prisonbreak"
-        android:scaleType="centerCrop"
-        android:layout_width="0dp"
-        android:layout_height="315dp"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="350dp"
-        android:text="Prison Break"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/image" />
-
-    <TextView
-        android:id="@+id/episodes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="5 episodes"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/name" />
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="100dp"
-        android:text="Prison Break is an American television serial drama created by Paul Scheuring, that was broadcast on Fox for four seasons, with 81 episodes from August 29, 2005 to May 15, 2009, and a fifth season which aired from April 4, to May 30, 2017. The series revolves around two brothers, one of whom has been sentenced to death for a crime he did not commit, and the other who devises an elaborate plan to help his brother escape prison and clear his name. "
-        android:textAlignment="textStart"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/episodes" />
-
-    <ListView
-        android:id="@+id/listview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="150dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/description" />/>
+        tools:context=".ShowDetails">
 
-</android.support.constraint.ConstraintLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        <ImageView
+            android:id="@+id/image"
+            android:contentDescription="@string/app_name"
+            android:background="@drawable/prisonbreak"
+            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="315dp"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Prison Break"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/episodes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="5 episodes"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Prison Break is an American television serial drama created by Paul Scheuring, that was broadcast on Fox for four seasons, with 81 episodes from August 29, 2005 to May 15, 2009, and a fifth season which aired from April 4, to May 30, 2017. The series revolves around two brothers, one of whom has been sentenced to death for a crime he did not commit, and the other who devises an elaborate plan to help his brother escape prison and clear his name. "
+            android:textAlignment="textStart"
+            android:padding="16dp" />
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
+
+    </LinearLayout>
 </ScrollView>
