@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">TV_Shows</string>
+    <string name="app_name">Show Tracker</string>
+
     <string-array name="shows_array">
         <item>Prison Break</item>
         <item>Scrubs</item>
@@ -16,4 +17,12 @@
         <item>Black Mirror</item>
         <item>Pinky Blinders</item>
     </string-array>
+
+    <string-array name="episodes_array">
+        <item>Pilot</item>
+        <item>Bruderherz</item>
+        <item>Wärter</item>
+    </string-array>
+
+
 </resources>
