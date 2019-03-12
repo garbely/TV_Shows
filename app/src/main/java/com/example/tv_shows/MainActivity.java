@@ -3,6 +3,8 @@ package com.example.tv_shows;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -20,11 +22,11 @@ public class MainActivity extends AppCompatActivity {
 
         listview = (ListView) findViewById(R.id.listview);
 
-        String [] shows = getResources().getStringArray(R.array.shows_array);
+        String[] shows = getResources().getStringArray(R.array.shows_array);
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shows);
 
         listview.setAdapter(adapter);
-        listview.setOnItemClickListener (new AdapterView.OnItemClickListener(){
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
             @Override
@@ -33,5 +35,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(myintent, 0);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+
+        MenuItem item1 = menu.findItem(R.id.delete);
+        item1.setVisible(false);
+        this.invalidateOptionsMenu();
+
+        MenuItem item2 = menu.findItem(R.id.edit);
+        item2.setVisible(false);
+        this.invalidateOptionsMenu();
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, ShowModify.class);
+        startActivityForResult(intent, 0);
+        return true;
     }
 }
