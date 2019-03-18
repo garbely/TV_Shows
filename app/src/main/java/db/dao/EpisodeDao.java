@@ -14,8 +14,8 @@ import db.entity.Episode;
 @Dao
 public interface EpisodeDao {
 
-    @Query("SELECT * FROM episode WHERE showId = :id")
-    LiveData<List<Episode>> getAllEpisodes(int id);
+    @Query("SELECT * FROM episode WHERE showName = :showName")
+    LiveData<List<Episode>> getAllEpisodes(String showName);
 
     @Query("SELECT * FROM episode WHERE id = :id")
     LiveData<Episode> getEpisode(int id);
@@ -27,5 +27,9 @@ public interface EpisodeDao {
     void modifyEpisode(Episode modifiedEpisode);
 
     @Delete
-    void deleteEpisode(int episodeId);
+    void deleteEpisode(Episode deletedEpisode);
+
+    @Query("DELETE FROM Episode")
+    public abstract void deleteAll();
+
 }

@@ -14,11 +14,11 @@ import db.entity.Show;
 @Dao
 public interface ShowDao {
 
-    @Query("SELECT name FROM Show")
+    @Query("SELECT * FROM Show")
     LiveData<List<Show>> getAllShows();
 
-    @Query("SELECT * FROM Show WHERE id = :id")
-    LiveData<Show> getShow(int id);
+    @Query("SELECT * FROM Show WHERE name = :name")
+    LiveData<Show> getShow(String name);
 
     @Insert
     void insertNewShow(Show newShow);
@@ -27,5 +27,9 @@ public interface ShowDao {
     void modifyShow(Show modifiedShow);
 
     @Delete
-    void deleteShow(int showId);
+    void deleteShow(Show deletedShow);
+
+    @Query("DELETE FROM Show")
+    public abstract void deleteAll();
+
 }

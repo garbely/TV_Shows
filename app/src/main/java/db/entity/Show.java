@@ -4,26 +4,24 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.media.Image;
+import android.support.annotation.NonNull;
 
-@Entity
+@Entity(primaryKeys = {"name"})
 public class Show {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
+    @NonNull
     private String name;
+
     private String description;
     private int numberEpisodes;
 
     @Ignore
     private Image picture;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Show(@NonNull String name, String description, int numberEpisodes) {
+        this.name = name;
+        this.description = description;
+        this.numberEpisodes = numberEpisodes;
     }
 
     public String getName() {
