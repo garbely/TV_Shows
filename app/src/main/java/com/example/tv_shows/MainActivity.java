@@ -1,14 +1,12 @@
 package com.example.tv_shows;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Room;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -16,13 +14,15 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import db.AppDatabase;
-import db.dao.ShowDao;
 import db.entity.Show;
+import db.viewmodel.show.ShowListViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
     ListView listview;
+
+    private List<Show> showList;
+    private ShowListViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +30,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+/*
 
         listview = (ListView) findViewById(R.id.listview);
 
         String[] shows = getResources().getStringArray(R.array.shows_array);
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shows);
+
+        listview.setAdapter(adapter);*/
+
+        listview = findViewById(R.id.listview);
+
+        showList = new ArrayList<>();
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+
+        ShowListViewModel.Factory factory = new ShowListViewModel.Factory(getApplication());
+        viewModel = ViewModelProviders.of(this, factory).get(ShowListViewModel.class);
+        viewModel.getShows().observe(this, showEntities -> {
+            if (showEntities != null) {
+                showList = showEntities;
+                adapter.addAll(showList);
+            }
+        });
 
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

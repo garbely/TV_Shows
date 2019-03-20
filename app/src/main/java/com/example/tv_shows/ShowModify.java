@@ -29,7 +29,7 @@ public class ShowModify extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_modify);
-
+/*
         editText1 = (EditText)findViewById(R.id.name);
         editText2 = (EditText)findViewById(R.id.description);
         editText3 = (EditText)findViewById(R.id.number);
@@ -46,6 +46,6 @@ public class ShowModify extends AppCompatActivity {
                 Show show = new Show(name, description, number);
                 appDatabase.showDao().insertNewShow(show);
             }
-        });
+        });*/
     }
 }

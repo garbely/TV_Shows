@@ -20,7 +20,7 @@ public class ShowListViewModel extends AndroidViewModel {
     private Application application;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final MediatorLiveData<List<Show>> observableClients;
+    private final MediatorLiveData<List<Show>> observableShows;
 
     public ShowListViewModel(@NonNull Application application,
                              ShowRepository repository) {
@@ -29,14 +29,14 @@ public class ShowListViewModel extends AndroidViewModel {
         this.repository = repository;
         this.application = application;
 
-        observableClients = new MediatorLiveData<>();
+        observableShows = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
-        observableClients.setValue(null);
+        observableShows.setValue(null);
 
         LiveData<List<Show>> clients = repository.getAllShows(application);
 
         // observe the changes of the entities from the database and forward them
-        observableClients.addSource(clients, observableClients::setValue);
+        observableShows.addSource(clients, observableShows::setValue);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ShowListViewModel extends AndroidViewModel {
     /**
      * Expose the LiveData ClientEntities query so the UI can observe it.
      */
-    public LiveData<List<Show>> getClients() {
-        return observableClients;
+    public LiveData<List<Show>> getShows() {
+        return observableShows;
     }
 }
