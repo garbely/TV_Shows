@@ -1,5 +1,7 @@
 package com.example.tv_shows;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +13,22 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import db.AppDatabase;
+import db.dao.ShowDao;
+import db.entity.Show;
+
 public class MainActivity extends AppCompatActivity {
 
     ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         listview = (ListView) findViewById(R.id.listview);

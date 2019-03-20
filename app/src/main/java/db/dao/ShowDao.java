@@ -14,10 +14,10 @@ import db.entity.Show;
 @Dao
 public interface ShowDao {
 
-    @Query("SELECT * FROM Show")
+    @Query("SELECT * FROM shows")
     LiveData<List<Show>> getAllShows();
 
-    @Query("SELECT * FROM Show WHERE name = :name")
+    @Query("SELECT * FROM shows WHERE name = :name")
     LiveData<Show> getShow(String name);
 
     @Insert
@@ -29,7 +29,7 @@ public interface ShowDao {
     @Delete
     void deleteShow(Show deletedShow);
 
-    @Query("DELETE FROM Show")
-    public abstract void deleteAll();
+    @Query("DELETE FROM shows")
+    void deleteAll();
 
 }

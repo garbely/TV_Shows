@@ -1,20 +1,22 @@
 package db.async.episode;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
 import db.AppDatabase;
+import db.BaseApp;
 import db.entity.Episode;
 import db.util.OnAsyncEventListener;
 
 public class UpdateEpisode extends AsyncTask<Episode, Void, Void> {
 
-    private AppDatabase database;
+    private Application application;
     private OnAsyncEventListener callback;
     private Exception exception;
 
-    public UpdateEpisode(Context context, OnAsyncEventListener callback) {
-        database = AppDatabase.getInstance(context);
+    public UpdateEpisode(Application application, OnAsyncEventListener callback) {
+        this.application = application;
         this.callback = callback;
     }
 
@@ -22,7 +24,7 @@ public class UpdateEpisode extends AsyncTask<Episode, Void, Void> {
     protected Void doInBackground(Episode... params) {
         try {
             for (Episode episode : params)
-                database.episodeDao().modifyEpisode(episode);
+                ((BaseApp) application).getDatabase().episodeDao().modifyEpisode(episode);
         } catch (Exception e) {
             exception = e;
         }

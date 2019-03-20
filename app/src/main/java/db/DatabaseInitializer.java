@@ -18,7 +18,7 @@ public class DatabaseInitializer {
     }
 
     private static void addShow(final AppDatabase db, final String name, final String description,
-                                  final int numberEpisodes) {
+                                final int numberEpisodes) {
         Show show = new Show(name, description, numberEpisodes);
         db.showDao().insertNewShow(show);
     }
@@ -57,8 +57,8 @@ public class DatabaseInitializer {
             e.printStackTrace();
         }
 
-        addEpisode(db, "Pilot", 1, 30, "PrisonBreak");
-        addEpisode(db, "Allen", 2, 32, "PrisonBreak");
+        addEpisode(db, "Pilot", 1, 30, "Prison Break");
+        addEpisode(db, "Allen", 2, 32, "Prison Break");
 
         addEpisode(db, "My First Day", 1, 24, "Scrubs");
         addEpisode(db, "My Mentor", 2, 22, "Scrubs");

@@ -2,12 +2,25 @@ package db.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
-@Entity(foreignKeys = @ForeignKey(entity = Show.class,
-                                    parentColumns = "name",
-                                    childColumns = "showName"))
+import java.util.Objects;
+
+@Entity(tableName = "episodes",
+        foreignKeys =
+        @ForeignKey(
+                entity = Show.class,
+                parentColumns = "name",
+                childColumns = "showName",
+                onDelete = ForeignKey.CASCADE
+        ),
+        indices = {
+                @Index(
+                        value = {"showName"}
+                )}
+)
 public class Episode {
 
     @PrimaryKey(autoGenerate = true)
@@ -18,7 +31,11 @@ public class Episode {
     private int length;
     private String showName;
 
-    public Episode(@NonNull int number, String name, int length, String showName) {
+    @Ignore
+    public Episode() {
+    }
+
+    public Episode(int number, String name, int length, String showName) {
         this.name = name;
         this.number = number;
         this.length = length;
@@ -63,5 +80,19 @@ public class Episode {
 
     public void setShowName(String showName) {
         this.showName = showName;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof Episode)) return false;
+        Episode o = (Episode) obj;
+        return (o.getId() == this.getId());
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

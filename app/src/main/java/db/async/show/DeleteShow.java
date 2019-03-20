@@ -1,20 +1,20 @@
 package db.async.show;
 
-import android.content.Context;
+import android.app.Application;
 import android.os.AsyncTask;
 
-import db.AppDatabase;
+import db.BaseApp;
 import db.entity.Show;
 import db.util.OnAsyncEventListener;
 
 public class DeleteShow extends AsyncTask<Show, Void, Void> {
 
-    private AppDatabase database;
+    private Application application;
     private OnAsyncEventListener callback;
     private Exception exception;
 
-    public DeleteShow(Context context, OnAsyncEventListener callback) {
-        database = AppDatabase.getInstance(context);
+    public DeleteShow(Application application, OnAsyncEventListener callback) {
+        this.application = application;
         this.callback = callback;
     }
 
@@ -22,7 +22,7 @@ public class DeleteShow extends AsyncTask<Show, Void, Void> {
     protected Void doInBackground(Show... params) {
         try {
             for (Show show : params)
-                database.showDao().deleteShow(show);
+                ((BaseApp) application).getDatabase().showDao().deleteShow(show);
         } catch (Exception e) {
             exception = e;
         }

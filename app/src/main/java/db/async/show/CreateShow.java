@@ -1,20 +1,22 @@
 package db.async.show;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
 import db.AppDatabase;
+import db.BaseApp;
 import db.entity.Show;
 import db.util.OnAsyncEventListener;
 
 public class CreateShow extends AsyncTask<Show, Void, Void> {
 
-    private AppDatabase database;
+    private Application application;
     private OnAsyncEventListener callback;
     private Exception exception;
 
-    public CreateShow(Context context, OnAsyncEventListener callback) {
-        database = AppDatabase.getInstance(context);
+    public CreateShow(Application application, OnAsyncEventListener callback) {
+        this.application = application;
         this.callback = callback;
     }
 
@@ -22,7 +24,7 @@ public class CreateShow extends AsyncTask<Show, Void, Void> {
     protected Void doInBackground(Show... params) {
         try {
             for (Show show : params)
-                database.showDao().insertNewShow(show);
+                ((BaseApp) application).getDatabase().showDao().insertNewShow(show);
         } catch (Exception e) {
             exception = e;
         }

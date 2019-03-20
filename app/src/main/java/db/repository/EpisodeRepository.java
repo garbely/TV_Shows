@@ -1,11 +1,13 @@
 package db.repository;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
 import java.util.List;
 
 import db.AppDatabase;
+import db.BaseApp;
 import db.async.episode.CreateEpisode;
 import db.async.episode.DeleteEpisode;
 import db.async.episode.UpdateEpisode;
@@ -29,23 +31,23 @@ public class EpisodeRepository {
         return instance;
     }
 
-    public LiveData<Episode> getEpisode(int episodeId, Context context) {
-        return AppDatabase.getInstance(context).episodeDao().getEpisode(episodeId);
+    public LiveData<Episode> getEpisode(final int episodeId, Application application) {
+        return ((BaseApp) application).getDatabase().episodeDao().getEpisode(episodeId);
     }
 
-    public LiveData<List<Episode>> getAllEpisodes(String showName, Context context) {
-        return AppDatabase.getInstance(context).episodeDao().getAllEpisodes(showName);
+    public LiveData<List<Episode>> getAllEpisodes(final String showName, Application application) {
+        return ((BaseApp) application).getDatabase().episodeDao().getAllEpisodes(showName);
     }
 
-    public void insert(final Episode episode, OnAsyncEventListener callback, Context context) {
-        new CreateEpisode(context, callback).execute(episode);
+    public void insert(final Episode episode, OnAsyncEventListener callback, Application application) {
+        new CreateEpisode(application, callback).execute(episode);
     }
 
-    public void update(final Episode episode, OnAsyncEventListener callback, Context context) {
-        new UpdateEpisode(context, callback).execute(episode);
+    public void update(final Episode episode, OnAsyncEventListener callback, Application application) {
+        new UpdateEpisode(application, callback).execute(episode);
     }
 
-    public void delete(final Episode episode, OnAsyncEventListener callback, Context context) {
-        new DeleteEpisode(context, callback).execute(episode);
+    public void delete(final Episode episode, OnAsyncEventListener callback, Application application) {
+        new DeleteEpisode(application, callback).execute(episode);
     }
 }
