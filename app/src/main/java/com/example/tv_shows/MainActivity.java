@@ -26,12 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-/*
+        setTitle("Shows");
 
+/*
         listview = (ListView) findViewById(R.id.listview);
 
         String[] shows = getResources().getStringArray(R.array.shows_array);
@@ -40,10 +39,8 @@ public class MainActivity extends AppCompatActivity {
         listview.setAdapter(adapter);*/
 
         listview = findViewById(R.id.listview);
-
         showList = new ArrayList<>();
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-
         ShowListViewModel.Factory factory = new ShowListViewModel.Factory(getApplication());
         viewModel = ViewModelProviders.of(this, factory).get(ShowListViewModel.class);
         viewModel.getShows().observe(this, showEntities -> {
@@ -52,11 +49,8 @@ public class MainActivity extends AppCompatActivity {
                 adapter.addAll(showList);
             }
         });
-
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent myintent = new Intent(view.getContext(), ShowDetails.class);

@@ -29,13 +29,20 @@ public class ShowModify extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_modify);
-/*
+
         editText1 = (EditText)findViewById(R.id.name);
         editText2 = (EditText)findViewById(R.id.description);
         editText3 = (EditText)findViewById(R.id.number);
         button = (Button)findViewById(R.id.save);
 
-        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "Show").allowMainThreadQueries().build();
+        if (editText1.getText().toString().equals("")) {
+            setTitle("Add show");
+        }
+        else {
+            setTitle("Edit show");
+        }
+
+        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "show-database").allowMainThreadQueries().build();
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -46,6 +53,6 @@ public class ShowModify extends AppCompatActivity {
                 Show show = new Show(name, description, number);
                 appDatabase.showDao().insertNewShow(show);
             }
-        });*/
+        });
     }
 }
