@@ -19,8 +19,7 @@ import db.viewmodel.show.ShowListViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listview;
-
+    private ListView listview;
     private List<Show> showList;
     private ShowListViewModel viewModel;
 
@@ -30,13 +29,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Shows");
 
-/*
-        listview = (ListView) findViewById(R.id.listview);
-
-        String[] shows = getResources().getStringArray(R.array.shows_array);
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shows);
-
-        listview.setAdapter(adapter);*/
+        /*
+            listview = (ListView) findViewById(R.id.listview);
+            String[] shows = getResources().getStringArray(R.array.shows_array);
+            ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shows);
+            listview.setAdapter(adapter);
+        */
 
         listview = findViewById(R.id.listview);
         showList = new ArrayList<>();
@@ -53,8 +51,15 @@ public class MainActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myintent = new Intent(view.getContext(), ShowDetails.class);
-                startActivityForResult(myintent, 0);
+                Intent intent = new Intent(view.getContext(), ShowDetails.class);
+        /*
+                intent.setFlags(
+                        Intent.FLAG_ACTIVITY_NO_ANIMATION |
+                        Intent.FLAG_ACTIVITY_NO_HISTORY
+                );
+        */
+                intent.putExtra("showName", showList.get(position).getName());
+                startActivity(intent);
             }
         });
     }

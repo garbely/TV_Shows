@@ -15,7 +15,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ShowDetails">
-
+<!--
     <ImageView
         android:id="@+id/image"
         android:contentDescription="@string/app_name"
@@ -23,7 +23,7 @@
         android:scaleType="centerCrop"
         android:layout_width="wrap_content"
         android:layout_height="315dp"/>
-
+-->
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
