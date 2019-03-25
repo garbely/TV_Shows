@@ -65,4 +65,8 @@ public class ShowViewModel extends AndroidViewModel {
     public void updateShow(Show show, OnAsyncEventListener callback) {
         repository.update(show, callback, application);
     }
+
+    public void deleteShow(Show show, OnAsyncEventListener callback) {
+        repository.delete(show, callback, application);
+    }
 }

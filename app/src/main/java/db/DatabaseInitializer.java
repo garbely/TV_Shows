@@ -50,6 +50,18 @@ public class DatabaseInitializer {
                 281
         );
 
+        addShow(db,
+                "Game of Thrones",
+                "Nine noble families fight for control over the mythical lands of Westeros, while an ancient enemy returns after being dormant for thousands of years. ",
+                126
+        );
+
+        addShow(db,
+                "The Walking Dead",
+                "Sheriff Deputy Rick Grimes wakes up from a coma to learn the world is in ruins, and must lead a group of survivors to stay alive. ",
+                101
+        );
+
         try {
             // Let's ensure that the clients are already stored in the database before we continue.
             Thread.sleep(1000);
@@ -59,6 +71,26 @@ public class DatabaseInitializer {
 
         addEpisode(db, "Pilot", 1, 30, "Prison Break");
         addEpisode(db, "Allen", 2, 32, "Prison Break");
+        addEpisode(db, "Cell Test", 3, 31, "Prison Break");
+        addEpisode(db, "Cute Poison", 4, 29, "Prison Break");
+        addEpisode(db, "English, Fitz or Percy", 5, 33, "Prison Break");
+        addEpisode(db, "Riots, Drills and the Devil (Part 1)", 6, 28, "Prison Break");
+        addEpisode(db, "Riots, Drills and the Devil (Part 2)", 7, 32, "Prison Break");
+        addEpisode(db, "The Old Head", 8, 32, "Prison Break");
+        addEpisode(db, "Tweener", 9, 31, "Prison Break");
+        addEpisode(db, "Sleight of Hand", 10, 31, "Prison Break");
+        addEpisode(db, "And Then There Were 7", 11, 35, "Prison Break");
+        addEpisode(db, "Odd Man Out", 12, 28, "Prison Break");
+        addEpisode(db, "End of the Tunnel", 13, 29, "Prison Break");
+        addEpisode(db, "The Rat", 14, 32, "Prison Break");
+        addEpisode(db, "By the Skin and the Teeth", 15, 30, "Prison Break");
+        addEpisode(db, "Brother's Keeper", 16, 32, "Prison Break");
+        addEpisode(db, "J-Cat", 17, 28, "Prison Break");
+        addEpisode(db, "Bluff", 18, 29, "Prison Break");
+        addEpisode(db, "The Key", 19, 28, "Prison Break");
+        addEpisode(db, "Tonight", 20, 31, "Prison Break");
+        addEpisode(db, "Go", 21, 35, "Prison Break");
+        addEpisode(db, "Flight", 22, 34, "Prison Break");
 
         addEpisode(db, "My First Day", 1, 24, "Scrubs");
         addEpisode(db, "My Mentor", 2, 22, "Scrubs");

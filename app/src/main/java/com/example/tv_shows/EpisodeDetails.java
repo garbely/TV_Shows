@@ -1,12 +1,25 @@
 package com.example.tv_shows;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import db.entity.Episode;
+import db.util.OnAsyncEventListener;
+import db.viewmodel.episode.EpisodeViewModel;
 
 public class EpisodeDetails extends AppCompatActivity {
+
+    private Episode episode;
+    private EpisodeViewModel viewModel;
+
+    private TextView tvEpisodeName;
+    private TextView tvEpisodeNumber;
+    private TextView tvLength;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,6 +27,18 @@ public class EpisodeDetails extends AppCompatActivity {
         setContentView(R.layout.activity_episode_details);
         setTitle("Episode Details");
 
+        int idEpisode = getIntent().getIntExtra("idEpisode", -1);
+
+        initiateView();
+
+        EpisodeViewModel.Factory factory = new EpisodeViewModel.Factory(getApplication(), idEpisode);
+        viewModel = ViewModelProviders.of(this, factory).get(EpisodeViewModel.class);
+        viewModel.getEpisode().observe(this, episodeEntity -> {
+            if (episodeEntity != null) {
+                episode = episodeEntity;
+                updateContent();
+            }
+        });
     }
 
     @Override
@@ -35,13 +60,36 @@ public class EpisodeDetails extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.edit:
                 intent = new Intent(EpisodeDetails.this, EpisodeModify.class);
+                intent.putExtra("idEpisode", episode.getId());
                 break;
             case R.id.delete:
-                // Delete Episode
+                viewModel.deleteEpisode(episode, new OnAsyncEventListener() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {}
+                });
+                intent = new Intent(EpisodeDetails.this, ShowDetails.class);
+                intent.putExtra("showName", episode.getShowName());
                 break;
         }
         startActivityForResult(intent, 0);
         return true;
     }
 
+    private void initiateView() {
+        tvEpisodeName = findViewById(R.id.name);
+        tvEpisodeNumber = findViewById(R.id.number);
+        tvLength = findViewById(R.id.length);
+    }
+
+    private void updateContent() {
+        if (episode != null) {
+            tvEpisodeName.setText(episode.getName());
+            tvEpisodeNumber.setText("Episode Number: #" + Integer.toString(episode.getNumber()));
+            tvLength.setText("Length: " + Integer.toString(episode.getLength()) + " min");
+        }
+    }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 import db.entity.Episode;
 import db.repository.EpisodeRepository;
+import db.util.OnAsyncEventListener;
 
 public class EpisodeListViewModel extends AndroidViewModel {
 
@@ -68,5 +69,9 @@ public class EpisodeListViewModel extends AndroidViewModel {
      */
     public LiveData<List<Episode>> getEpisodes() {
         return observableEpisodes;
+    }
+
+    public void deleteEpisode(Episode episode, OnAsyncEventListener callback) {
+        repository.delete(episode, callback, application);
     }
 }

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Name" />
+        android:hint="Show Name" />
 
     <EditText
         android:id="@+id/description"
@@ -21,14 +21,14 @@
         android:layout_height="200dp"
         android:autoSizeTextType="uniform"
         android:layout_marginTop="20dp"
-        android:hint="Description"/>
+        android:hint="Show Description"/>
 
     <EditText
         android:id="@+id/number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Number" />
+        android:hint="Number of episodes" />
 
     <Button
         android:id="@+id/save"

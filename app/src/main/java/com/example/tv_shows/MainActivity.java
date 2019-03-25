@@ -29,13 +29,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Shows");
 
-        /*
-            listview = (ListView) findViewById(R.id.listview);
-            String[] shows = getResources().getStringArray(R.array.shows_array);
-            ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shows);
-            listview.setAdapter(adapter);
-        */
-
         listview = findViewById(R.id.listview);
         showList = new ArrayList<>();
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -52,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), ShowDetails.class);
-        /*
+
                 intent.setFlags(
                         Intent.FLAG_ACTIVITY_NO_ANIMATION |
                         Intent.FLAG_ACTIVITY_NO_HISTORY
                 );
-        */
+
                 intent.putExtra("showName", showList.get(position).getName());
                 startActivity(intent);
             }
@@ -82,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(MainActivity.this, ShowModify.class);
+        intent.putExtra("showName", "");
         startActivityForResult(intent, 0);
         return true;
     }

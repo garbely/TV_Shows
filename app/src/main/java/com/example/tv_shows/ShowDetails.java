@@ -19,6 +19,7 @@ import java.util.List;
 
 import db.entity.Episode;
 import db.entity.Show;
+import db.util.OnAsyncEventListener;
 import db.viewmodel.episode.EpisodeListViewModel;
 import db.viewmodel.show.ShowViewModel;
 
@@ -39,7 +40,7 @@ public class ShowDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_details);
-        setTitle("Show Details & Episodes");
+        setTitle("Show Details");
 
         String showName = getIntent().getStringExtra("showName");
 
@@ -53,24 +54,6 @@ public class ShowDetails extends AppCompatActivity {
                 updateContent();
             }
         });
-
-    /*
-        listview = (ListView) findViewById(R.id.listview);
-
-        String [] episodes = getResources().getStringArray(R.array.episodes_array);
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, episodes);
-
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener (new AdapterView.OnItemClickListener(){
-
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myintent = new Intent(view.getContext(), EpisodeDetails.class);
-                startActivityForResult(myintent, 0);
-            }
-        });
-    */
     }
 
     @Override
@@ -87,12 +70,22 @@ public class ShowDetails extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add:
                 intent = new Intent(ShowDetails.this, EpisodeModify.class);
+                intent.putExtra("showName", show.getName());
                 break;
             case R.id.edit:
                 intent = new Intent(ShowDetails.this, ShowModify.class);
+                intent.putExtra("showName", show.getName());
                 break;
             case R.id.delete:
-                // Delete Show
+                vmShow.deleteShow(show, new OnAsyncEventListener() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {}
+                });
+                intent = new Intent(ShowDetails.this, MainActivity.class);
                 break;
         }
         startActivityForResult(intent, 0);
@@ -133,17 +126,18 @@ public class ShowDetails extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), EpisodeDetails.class);
-        /*
+
                 intent.setFlags(
                         Intent.FLAG_ACTIVITY_NO_ANIMATION |
                         Intent.FLAG_ACTIVITY_NO_HISTORY
                 );
-        */
-                intent.putExtra("episodeName", episodeList.get(position).getName());
+
+                intent.putExtra("idEpisode", episodeList.get(position).getId());
                 startActivity(intent);
             }
         });
     }
+
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -165,5 +159,4 @@ public class ShowDetails extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
-
 }
