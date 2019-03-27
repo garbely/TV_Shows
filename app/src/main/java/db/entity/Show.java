@@ -15,20 +15,14 @@ public class Show implements Comparable {
     private String name;
 
     private String description;
-    private int numberEpisodes;
-/*
-    @Ignore
-    private Image picture;
-*/
 
     @Ignore
     public Show() {
     }
 
-    public Show(@NonNull String name, String description, int numberEpisodes) {
+    public Show(@NonNull String name, String description) {
         this.name = name;
         this.description = description;
-        this.numberEpisodes = numberEpisodes;
     }
 
     public String getName() {
@@ -46,23 +40,6 @@ public class Show implements Comparable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public int getNumberEpisodes() {
-        return numberEpisodes;
-    }
-
-    public void setNumberEpisodes(int numberEpisodes) {
-        this.numberEpisodes = numberEpisodes;
-    }
-/*
-    public Image getPicture() {
-        return picture;
-    }
-
-    public void setPicture(Image picture) {
-        this.picture = picture;
-    }
-    */
 
     @Override
     public boolean equals(Object obj) {

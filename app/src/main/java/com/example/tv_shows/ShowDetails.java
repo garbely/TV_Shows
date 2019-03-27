@@ -39,6 +39,7 @@ public class ShowDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_show_details);
         setTitle("Show Details");
 
@@ -59,6 +60,11 @@ public class ShowDetails extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+
+        MenuItem item1 = menu.findItem(R.id.action_settings);
+        item1.setVisible(false);
+        this.invalidateOptionsMenu();
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -83,13 +89,19 @@ public class ShowDetails extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Exception e) {}
+                    public void onFailure(Exception e) {
+                    }
                 });
                 intent = new Intent(ShowDetails.this, MainActivity.class);
                 break;
         }
-        startActivityForResult(intent, 0);
-        return true;
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NO_ANIMATION |
+                        Intent.FLAG_ACTIVITY_NO_HISTORY
+        );
+        finish();
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
     }
 
     private void initiateView() {
@@ -101,10 +113,9 @@ public class ShowDetails extends AppCompatActivity {
 
     private void updateContent() {
         if (show != null) {
-            tvShowname.setText(show.getName());
-            tvNumberEpisodes.setText(show.getNumberEpisodes() + " episodes");
-            tvDescription.setText(show.getDescription());
             createEpisodeList();
+            tvShowname.setText(show.getName());
+            tvDescription.setText(show.getDescription());
         }
     }
 
@@ -119,6 +130,7 @@ public class ShowDetails extends AppCompatActivity {
                 episodeList = episodeEntities;
                 adapter.addAll(episodeList);
                 setListViewHeightBasedOnChildren(listview); // To stretch the listView dynamically, so it's not only showing the first object in the listview
+                tvNumberEpisodes.setText(episodeList.size() + " episodes");
             }
         });
         listview.setAdapter(adapter);
@@ -129,7 +141,7 @@ public class ShowDetails extends AppCompatActivity {
 
                 intent.setFlags(
                         Intent.FLAG_ACTIVITY_NO_ANIMATION |
-                        Intent.FLAG_ACTIVITY_NO_HISTORY
+                                Intent.FLAG_ACTIVITY_NO_HISTORY
                 );
 
                 intent.putExtra("idEpisode", episodeList.get(position).getId());
@@ -137,7 +149,6 @@ public class ShowDetails extends AppCompatActivity {
             }
         });
     }
-
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -159,4 +170,5 @@ public class ShowDetails extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
+
 }

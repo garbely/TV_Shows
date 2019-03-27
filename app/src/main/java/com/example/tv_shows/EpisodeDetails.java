@@ -24,6 +24,7 @@ public class EpisodeDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_episode_details);
         setTitle("Episode Details");
 
@@ -47,6 +48,10 @@ public class EpisodeDetails extends AppCompatActivity {
 
         MenuItem item1 = menu.findItem(R.id.add);
         item1.setVisible(false);
+        this.invalidateOptionsMenu();
+
+        MenuItem item2 = menu.findItem(R.id.action_settings);
+        item2.setVisible(false);
         this.invalidateOptionsMenu();
 
         return super.onCreateOptionsMenu(menu);
@@ -75,8 +80,13 @@ public class EpisodeDetails extends AppCompatActivity {
                 intent.putExtra("showName", episode.getShowName());
                 break;
         }
-        startActivityForResult(intent, 0);
-        return true;
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NO_ANIMATION |
+                        Intent.FLAG_ACTIVITY_NO_HISTORY
+        );
+        finish();
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
     }
 
     private void initiateView() {

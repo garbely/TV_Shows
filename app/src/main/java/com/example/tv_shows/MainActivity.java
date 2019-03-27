@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             if (showEntities != null) {
                 showList = showEntities;
                 adapter.addAll(showList);
+                setListViewHeightBasedOnChildren(listview);
             }
         });
         listview.setAdapter(adapter);
@@ -47,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), ShowDetails.class);
 
                 intent.setFlags(
-                        Intent.FLAG_ACTIVITY_NO_ANIMATION |
-                        Intent.FLAG_ACTIVITY_NO_HISTORY
+                        Intent.FLAG_ACTIVITY_NO_ANIMATION
                 );
 
                 intent.putExtra("showName", showList.get(position).getName());
@@ -74,9 +76,45 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(MainActivity.this, ShowModify.class);
-        intent.putExtra("showName", "");
-        startActivityForResult(intent, 0);
-        return true;
+
+        Intent intent = getIntent();
+
+        switch (item.getItemId()) {
+            case R.id.add:
+                intent = new Intent(MainActivity.this, ShowModify.class);
+                intent.putExtra("showName", "");
+                finish();
+                break;
+            case R.id.action_settings:
+                intent = new Intent(MainActivity.this, SettingsActivity.class);
+                break;
+        }
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NO_ANIMATION |
+                        Intent.FLAG_ACTIVITY_NO_HISTORY
+        );
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }

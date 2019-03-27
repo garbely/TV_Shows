@@ -20,20 +20,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Number"/>
+        android:hint="Number"
+        android:inputType="number"/>
 
     <EditText
         android:id="@+id/length"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Length" />
+        android:hint="Length (minutes)"
+        android:inputType="number"/>
 
     <Button
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save" />
-
-
 </LinearLayout>

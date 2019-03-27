@@ -23,18 +23,12 @@
         android:layout_marginTop="20dp"
         android:hint="Show Description"/>
 
-    <EditText
-        android:id="@+id/number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Number of episodes" />
-
     <Button
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save" />
+        android:text="Save"
+        android:enabled="false"/>
 
 
 </LinearLayout>

@@ -10,21 +10,57 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EpisodeModify"></activity>
-        <activity android:name=".ShowModify" />
-        <activity android:name=".EpisodeDetails" />
-        <activity android:name=".ShowDetails" />
 
         <meta-data
             android:name="com.google.android.actions"
             android:value=".MainActivity" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ShowDetails"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ShowModify"
+            android:parentActivityName=".ShowDetails">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShowDetails" />
+        </activity>
+
+        <activity
+            android:name=".EpisodeDetails"
+            android:parentActivityName=".ShowDetails">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShowDetails" />
+        </activity>
+
+        <activity
+            android:name=".EpisodeModify"
+            android:parentActivityName=".EpisodeDetails">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".EpisodeDetails" />
+        </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
     </application>
 

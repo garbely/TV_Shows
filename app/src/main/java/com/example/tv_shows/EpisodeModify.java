@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +33,7 @@ public class EpisodeModify extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_episode_modify);
 
         showName = getIntent().getStringExtra("showName");
@@ -39,6 +42,10 @@ public class EpisodeModify extends AppCompatActivity {
         editText2 = (EditText) findViewById(R.id.number);
         editText3 = (EditText) findViewById(R.id.length);
         button = (Button) findViewById(R.id.save);
+
+        editText1.addTextChangedListener(loginTextWatcher);
+        editText2.addTextChangedListener(loginTextWatcher);
+        editText3.addTextChangedListener(loginTextWatcher);
 
         int idEpisode = getIntent().getIntExtra("idEpisode", -1);
 
@@ -111,6 +118,28 @@ public class EpisodeModify extends AppCompatActivity {
             });
             intent.putExtra("showName", showName);
         }
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NO_ANIMATION |
+                        Intent.FLAG_ACTIVITY_NO_HISTORY
+        );
         startActivity(intent);
     }
+
+
+    private TextWatcher loginTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String nameInput = editText1.getText().toString().trim();
+            String numberInput = editText2.getText().toString().trim();
+            String lenghtInput = editText3.getText().toString().trim();
+
+            button.setEnabled(!nameInput.isEmpty() && !numberInput.isEmpty() && !lenghtInput.isEmpty());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
 }

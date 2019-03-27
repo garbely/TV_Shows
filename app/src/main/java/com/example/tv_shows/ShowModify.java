@@ -1,16 +1,16 @@
 package com.example.tv_shows;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import db.AppDatabase;
 import db.entity.Show;
 import db.util.OnAsyncEventListener;
 import db.viewmodel.show.ShowViewModel;
@@ -24,7 +24,6 @@ public class ShowModify extends AppCompatActivity {
 
     private EditText editText1;
     private EditText editText2;
-    private EditText editText3;
     private Button button;
 
     private ShowViewModel viewModel;
@@ -34,14 +33,17 @@ public class ShowModify extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_show_modify);
 
         showName = getIntent().getStringExtra("showName");
 
         editText1 = (EditText) findViewById(R.id.name);
         editText2 = (EditText) findViewById(R.id.description);
-        editText3 = (EditText) findViewById(R.id.number);
         button = (Button) findViewById(R.id.save);
+
+        editText1.addTextChangedListener(loginTextWatcher);
+        editText2.addTextChangedListener(loginTextWatcher);
 
         if (showName.equals("")) {
             setTitle("Add Show");
@@ -62,32 +64,27 @@ public class ShowModify extends AppCompatActivity {
                     editText1.setText(show.getName() + " (Not editable)");
                     editText1.setEnabled(false);
                     editText2.setText(String.valueOf(show.getDescription()));
-                    editText3.setText(String.valueOf(show.getNumberEpisodes()));
                 }
             });
         }
 
         button.setOnClickListener(view -> {
             saveChanges(editText1.getText().toString(),
-                    editText2.getText().toString(),
-                    Integer.valueOf(editText3.getText().toString())
+                    editText2.getText().toString()
             );
             onBackPressed();
         });
     }
 
-    private void saveChanges(String name, String description, int numberEpisodes) {
+    private void saveChanges(String name, String description) {
 
-        Intent intent = getIntent();
-        intent = new Intent(ShowModify.this, MainActivity.class);
+        Intent intent = new Intent(ShowModify.this, MainActivity.class);
 
         if (isEditMode) {
-            if (!"".equals(name)) {
-                String substringShowName = name.substring(0, name.length()-15);
+                String substringShowName = name.substring(0, name.length() - 15);
                 show.setName(substringShowName);
                 System.out.println(show.getName());
                 show.setDescription(description);
-                show.setNumberEpisodes(numberEpisodes);
                 viewModel.updateShow(show, new OnAsyncEventListener() {
                     @Override
                     public void onSuccess() {
@@ -100,9 +97,9 @@ public class ShowModify extends AppCompatActivity {
                     }
                 });
                 System.out.println(show.getName());
-            }
         } else {
-            Show newShow = new Show(name, description, numberEpisodes);
+
+            Show newShow = new Show(name, description);
             viewModel.createShow(newShow, new OnAsyncEventListener() {
                 @Override
                 public void onSuccess() {
@@ -112,9 +109,31 @@ public class ShowModify extends AppCompatActivity {
                 @Override
                 public void onFailure(Exception e) {
                     Log.d(TAG, "create Show: failure", e);
+                    Toast toast = Toast.makeText(getApplicationContext(),"Show is already in the list. Try Again.", Toast.LENGTH_LONG);
+                    toast.show();
                 }
             });
         }
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NO_ANIMATION |
+                        Intent.FLAG_ACTIVITY_NO_HISTORY
+        );
         startActivity(intent);
     }
+
+    private TextWatcher loginTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String nameInput = editText1.getText().toString().trim();
+            String descInput = editText2.getText().toString().trim();
+
+            button.setEnabled(!nameInput.isEmpty() && !descInput.isEmpty());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
 }
