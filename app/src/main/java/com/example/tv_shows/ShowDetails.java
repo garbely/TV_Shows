@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import db.entity.Episode;
@@ -25,13 +28,18 @@ import db.viewmodel.show.ShowViewModel;
 
 public class ShowDetails extends AppCompatActivity {
 
+    private static final String TAG = "ShowDetails";
+
+    // Show Entity & ViewModel
     private Show show;
     private ShowViewModel vmShow;
 
+    // TextViews for all information about the Show
     private TextView tvShowname;
     private TextView tvNumberEpisodes;
     private TextView tvDescription;
 
+    // Listview for episode information (associated to EpisodeList ViewModel)
     private ListView listview;
     private List<Episode> episodeList;
     private EpisodeListViewModel vmEpisodeList;
@@ -43,10 +51,13 @@ public class ShowDetails extends AppCompatActivity {
         setContentView(R.layout.activity_show_details);
         setTitle("Show Details");
 
+        // Get the showname of the show chosen by the user
         String showName = getIntent().getStringExtra("showName");
 
+        // Associate TextViews with xml declarations
         initiateView();
 
+        // Get Show Details & Create ViewModels including List of Episodes
         ShowViewModel.Factory showFac = new ShowViewModel.Factory(getApplication(), showName);
         vmShow = ViewModelProviders.of(this, showFac).get(ShowViewModel.class);
         vmShow.getShow().observe(this, showEntity -> {
@@ -74,25 +85,35 @@ public class ShowDetails extends AppCompatActivity {
         Intent intent = getIntent();
 
         switch (item.getItemId()) {
+
+            // Insert Episode to Show
             case R.id.add:
                 intent = new Intent(ShowDetails.this, EpisodeModify.class);
                 intent.putExtra("showName", show.getName());
                 break;
+
+            // Function "Update Show"
             case R.id.edit:
                 intent = new Intent(ShowDetails.this, ShowModify.class);
                 intent.putExtra("showName", show.getName());
                 break;
+
+            // Function "Delete Show"
             case R.id.delete:
                 vmShow.deleteShow(show, new OnAsyncEventListener() {
                     @Override
                     public void onSuccess() {
+                        Log.d(TAG, "Show Details: success");
                     }
 
                     @Override
                     public void onFailure(Exception e) {
+                        Log.d(TAG, "Show Details: failure", e);
+                        Toast toast = Toast.makeText(getApplicationContext(),"Show couldn't be deleted. Try Again.", Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 });
-                intent = new Intent(ShowDetails.this, MainActivity.class);
+                intent = new Intent(ShowDetails.this, MainActivity.class);  // go back to mainpage (List of shows)
                 break;
         }
         intent.setFlags(
@@ -128,9 +149,10 @@ public class ShowDetails extends AppCompatActivity {
         vmEpisodeList.getEpisodes().observe(this, episodeEntities -> {
             if (episodeEntities != null) {
                 episodeList = episodeEntities;
+                episodeList.sort(Comparator.comparingInt(Episode::getNumber));  // sort by Number of episode, not alphabetically
                 adapter.addAll(episodeList);
                 setListViewHeightBasedOnChildren(listview); // To stretch the listView dynamically, so it's not only showing the first object in the listview
-                tvNumberEpisodes.setText(episodeList.size() + " episodes");
+                tvNumberEpisodes.setText(episodeList.size() + " episodes"); // show the amount of saved episodes by show (dynamic)
             }
         });
         listview.setAdapter(adapter);
@@ -144,11 +166,13 @@ public class ShowDetails extends AppCompatActivity {
                                 Intent.FLAG_ACTIVITY_NO_HISTORY
                 );
 
-                intent.putExtra("idEpisode", episodeList.get(position).getId());
+                intent.putExtra("idEpisode", episodeList.get(position).getId()); // give episode id parameter so next activity knows the desired episode
                 startActivity(intent);
             }
         });
     }
+
+    // Method to list all list items instead of only the first item of the list
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -170,5 +194,4 @@ public class ShowDetails extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
-
 }

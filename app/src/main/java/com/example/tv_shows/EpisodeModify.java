@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import db.entity.Episode;
 import db.util.OnAsyncEventListener;
@@ -20,13 +21,18 @@ public class EpisodeModify extends AppCompatActivity {
 
     private String showName;
 
+    // Initiate EditTexts to change the 3 attributes
     private EditText editText1;
     private EditText editText2;
     private EditText editText3;
+
+    // Button to save changed attribute/s
     private Button button;
 
+    // Boolean that distinguishes between Add and Update Function
     private boolean isEditMode;
 
+    // Episode Entity & ViewModel
     private EpisodeViewModel viewModel;
     private Episode episode;
 
@@ -36,31 +42,23 @@ public class EpisodeModify extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_episode_modify);
 
-        showName = getIntent().getStringExtra("showName");
+        showName = getIntent().getStringExtra("showName"); // Attribute (foreign key) ShowName -> needed if new Episode is created
+        int idEpisode = getIntent().getIntExtra("idEpisode", -1); // Attribute (primary key) episodeID -> needed if existing Episode is updated
 
-        editText1 = (EditText) findViewById(R.id.name);
-        editText2 = (EditText) findViewById(R.id.number);
-        editText3 = (EditText) findViewById(R.id.length);
-        button = (Button) findViewById(R.id.save);
-
-        editText1.addTextChangedListener(loginTextWatcher);
-        editText2.addTextChangedListener(loginTextWatcher);
-        editText3.addTextChangedListener(loginTextWatcher);
-
-        int idEpisode = getIntent().getIntExtra("idEpisode", -1);
+        initiateView(); // Associate TextViews with xml declarations & Add TextChangedListener
 
         if (idEpisode == -1) {
             setTitle("Add Episode");
             isEditMode = false;
         } else {
             setTitle("Edit Episode");
-            button.setText("Save Changes");
+            button.setText("Save Changes"); // Changing Text in the button if EditMode
             isEditMode = true;
         }
 
+        // Get Episode Details & Create ViewModel
         EpisodeViewModel.Factory factory = new EpisodeViewModel.Factory(getApplication(), idEpisode);
         viewModel = ViewModelProviders.of(this, factory).get(EpisodeViewModel.class);
-
         if (isEditMode) {
             viewModel.getEpisode().observe(this, episodeEntity -> {
                 if (episodeEntity != null) {
@@ -71,6 +69,7 @@ public class EpisodeModify extends AppCompatActivity {
                 }
             });
         }
+
         button.setOnClickListener(view -> {
             saveChanges(editText1.getText().toString(),
                     Integer.valueOf(editText2.getText().toString()),
@@ -80,29 +79,40 @@ public class EpisodeModify extends AppCompatActivity {
         });
     }
 
+    private void initiateView() {
+        editText1 = (EditText) findViewById(R.id.name);
+        editText2 = (EditText) findViewById(R.id.number);
+        editText3 = (EditText) findViewById(R.id.length);
+        button = (Button) findViewById(R.id.save);
+
+        editText1.addTextChangedListener(loginTextWatcher);
+        editText2.addTextChangedListener(loginTextWatcher);
+        editText3.addTextChangedListener(loginTextWatcher);
+    }
+
     private void saveChanges(String name, int number, int length) {
 
-        Intent intent = getIntent();
-        intent = new Intent(EpisodeModify.this, ShowDetails.class);
+        Intent intent = new Intent(EpisodeModify.this, ShowDetails.class);
 
         if (isEditMode) {
-            if (!"".equals(name)) {
-                episode.setName(name);
-                episode.setNumber(number);
-                episode.setLength(length);
-                viewModel.updateEpisode(episode, new OnAsyncEventListener() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(TAG, "update Episode: success");
-                    }
+            episode.setName(name);
+            episode.setNumber(number);
+            episode.setLength(length);
+            viewModel.updateEpisode(episode, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "update Episode: success");
+                }
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        Log.d(TAG, "update Episode: failure", e);
-                    }
-                });
-                intent.putExtra("showName", episode.getShowName());
-            }
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "update Episode: failure", e);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Episode couldn't be updated. Try Again.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            });
+            intent.putExtra("showName", episode.getShowName()); // give ShowName to next activity
+
         } else {
             Episode newEpisode = new Episode(number, name, length, showName);
             viewModel.createEpisode(newEpisode, new OnAsyncEventListener() {
@@ -114,9 +124,11 @@ public class EpisodeModify extends AppCompatActivity {
                 @Override
                 public void onFailure(Exception e) {
                     Log.d(TAG, "create Episode: failure", e);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Episode couldn't be inserted. Try Again.", Toast.LENGTH_LONG);
+                    toast.show();
                 }
             });
-            intent.putExtra("showName", showName);
+            intent.putExtra("showName", showName);  // give ShowName to next activity
         }
         intent.setFlags(
                 Intent.FLAG_ACTIVITY_NO_ANIMATION |
@@ -125,10 +137,11 @@ public class EpisodeModify extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    // TextWatcher class, to enable the Button only if Textfields are not empty
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -140,6 +153,7 @@ public class EpisodeModify extends AppCompatActivity {
         }
 
         @Override
-        public void afterTextChanged(Editable s) {}
+        public void afterTextChanged(Editable s) {
+        }
     };
 }

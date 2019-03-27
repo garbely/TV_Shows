@@ -22,10 +22,14 @@ public class ShowModify extends AppCompatActivity {
     private String showName;
     private boolean isEditMode;
 
+    // Initiate EditTexts to change the 2 attributes
     private EditText editText1;
     private EditText editText2;
+
+    // Button to save changed attribute/s
     private Button button;
 
+    // Show Entity & ViewModel
     private ShowViewModel viewModel;
     private Show show;
 
@@ -36,15 +40,11 @@ public class ShowModify extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_show_modify);
 
-        showName = getIntent().getStringExtra("showName");
+        showName = getIntent().getStringExtra("showName"); // Attribute (primary key) ShowName
 
-        editText1 = (EditText) findViewById(R.id.name);
-        editText2 = (EditText) findViewById(R.id.description);
-        button = (Button) findViewById(R.id.save);
+        initiateView(); // Associate TextViews with xml declarations & Add TextChangedListener
 
-        editText1.addTextChangedListener(loginTextWatcher);
-        editText2.addTextChangedListener(loginTextWatcher);
-
+        // Define if EditMode or not (Add mode)
         if (showName.equals("")) {
             setTitle("Add Show");
             isEditMode = false;
@@ -54,6 +54,7 @@ public class ShowModify extends AppCompatActivity {
             isEditMode = true;
         }
 
+        // Get Show Details & Create ViewModel
         ShowViewModel.Factory factory = new ShowViewModel.Factory(getApplication(), showName);
         viewModel = ViewModelProviders.of(this, factory).get(ShowViewModel.class);
 
@@ -61,7 +62,7 @@ public class ShowModify extends AppCompatActivity {
             viewModel.getShow().observe(this, showEntity -> {
                 if (showEntity != null) {
                     show = showEntity;
-                    editText1.setText(show.getName() + " (Not editable)");
+                    editText1.setText(show.getName() + " (Not editable)"); // Inform user that Name is not editable -> Primary Key
                     editText1.setEnabled(false);
                     editText2.setText(String.valueOf(show.getDescription()));
                 }
@@ -76,29 +77,38 @@ public class ShowModify extends AppCompatActivity {
         });
     }
 
+    private void initiateView() {
+        editText1 = (EditText) findViewById(R.id.name);
+        editText2 = (EditText) findViewById(R.id.description);
+        button = (Button) findViewById(R.id.save);
+
+        editText1.addTextChangedListener(loginTextWatcher);
+        editText2.addTextChangedListener(loginTextWatcher);
+    }
+
     private void saveChanges(String name, String description) {
 
         Intent intent = new Intent(ShowModify.this, MainActivity.class);
 
         if (isEditMode) {
-                String substringShowName = name.substring(0, name.length() - 15);
+                String substringShowName = name.substring(0, name.length() - 15); // Delete part of the String -> (Not editable)
                 show.setName(substringShowName);
                 System.out.println(show.getName());
                 show.setDescription(description);
                 viewModel.updateShow(show, new OnAsyncEventListener() {
                     @Override
                     public void onSuccess() {
-                        System.out.println("update Show: success");
+                        Log.d(TAG, "update Show: success");
                     }
 
                     @Override
                     public void onFailure(Exception e) {
-                        System.out.println("update Show: failure");
+                        Log.d(TAG, "update Show: failure", e);
+                        Toast toast = Toast.makeText(getApplicationContext(), "Show couldn't be updated. Try Again.", Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 });
-                System.out.println(show.getName());
         } else {
-
             Show newShow = new Show(name, description);
             viewModel.createShow(newShow, new OnAsyncEventListener() {
                 @Override
@@ -110,7 +120,7 @@ public class ShowModify extends AppCompatActivity {
                 public void onFailure(Exception e) {
                     Log.d(TAG, "create Show: failure", e);
                     Toast toast = Toast.makeText(getApplicationContext(),"Show is already in the list. Try Again.", Toast.LENGTH_LONG);
-                    toast.show();
+                    toast.show(); // Because showname is primary key, name cannot exist twice
                 }
             });
         }
@@ -121,6 +131,7 @@ public class ShowModify extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // TextWatcher class, to enable the Button only if Textfields are not empty
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

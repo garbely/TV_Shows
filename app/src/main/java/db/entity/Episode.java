@@ -6,8 +6,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.util.Objects;
-
 @Entity(tableName = "episodes",
         foreignKeys =
         @ForeignKey(
@@ -93,6 +91,6 @@ public class Episode {
 
     @Override
     public String toString() {
-        return name;
+        return number + ":     " + name;
     }
 }

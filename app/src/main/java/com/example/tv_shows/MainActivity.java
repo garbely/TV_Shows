@@ -14,6 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import db.entity.Show;
@@ -21,6 +22,7 @@ import db.viewmodel.show.ShowListViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Required Showlist parameters associated to ViewModel
     private ListView listview;
     private List<Show> showList;
     private ShowListViewModel viewModel;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Shows");
 
+        // Create List by ViewModel
         listview = findViewById(R.id.listview);
         showList = new ArrayList<>();
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getShows().observe(this, showEntities -> {
             if (showEntities != null) {
                 showList = showEntities;
+                Collections.sort(showList);
                 adapter.addAll(showList);
                 setListViewHeightBasedOnChildren(listview);
             }
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
 
+        // Hide unused Action Bar icons
+
         MenuItem item1 = menu.findItem(R.id.delete);
         item1.setVisible(false);
         this.invalidateOptionsMenu();
@@ -80,11 +86,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         switch (item.getItemId()) {
+
+            // Insert Show Function
             case R.id.add:
                 intent = new Intent(MainActivity.this, ShowModify.class);
-                intent.putExtra("showName", "");
+                intent.putExtra("showName", ""); // need to give a default String value "" that the ShowModify activity understands it is AddMode, not EditMode
                 finish();
                 break;
+
+            // Settings
             case R.id.action_settings:
                 intent = new Intent(MainActivity.this, SettingsActivity.class);
                 break;
@@ -97,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Method to list all list items instead of only the first item of the list
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null)
