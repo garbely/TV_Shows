@@ -3,7 +3,7 @@
     package="com.example.tv_shows">
 
     <application
-        android:name="db.BaseApp"
+        android:name="com.example.tv_shows.BaseApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
             android:value=".MainActivity" />
 
         <activity
-            android:name=".MainActivity">
+            android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,43 +24,43 @@
         </activity>
 
         <activity
-            android:name=".ShowDetails"
-            android:parentActivityName=".MainActivity">
+            android:name=".ui.ShowDetails"
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".ui.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ShowModify"
-            android:parentActivityName=".ShowDetails">
+            android:name=".ui.ShowModify"
+            android:parentActivityName=".ui.ShowDetails">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ShowDetails" />
+                android:value=".ui.ShowDetails" />
         </activity>
 
         <activity
-            android:name=".EpisodeDetails"
-            android:parentActivityName=".ShowDetails">
+            android:name=".ui.EpisodeDetails"
+            android:parentActivityName=".ui.ShowDetails">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ShowDetails" />
+                android:value=".ui.ShowDetails" />
         </activity>
 
         <activity
-            android:name=".EpisodeModify"
-            android:parentActivityName=".EpisodeDetails">
+            android:name=".ui.EpisodeModify"
+            android:parentActivityName=".ui.EpisodeDetails">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".EpisodeDetails" />
+                android:value=".ui.EpisodeDetails" />
         </activity>
 
         <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity">
+            android:name=".ui.SettingsActivity"
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".ui.MainActivity" />
         </activity>
     </application>
 

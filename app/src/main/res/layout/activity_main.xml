@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ShowDetails">
+        tools:context=".ui.ShowDetails">
 
         <ImageView
             android:id="@+id/image"
@@ -31,5 +31,6 @@
             android:scrollbars="vertical"
             android:scrollingCache="true"
             android:smoothScrollbar="true" />
+
     </LinearLayout>
 </ScrollView>
