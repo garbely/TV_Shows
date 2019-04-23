@@ -56,6 +56,11 @@ public class Episode implements Comparable {
         this.showName = showName;
     }
 
+    @Exclude
+    public int getNumber() {
+        return Integer.valueOf(id);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;

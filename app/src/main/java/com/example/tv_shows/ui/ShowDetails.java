@@ -24,7 +24,7 @@ import com.example.tv_shows.viewmodel.episode.EpisodeListViewModel;
 import com.example.tv_shows.viewmodel.show.ShowViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ShowDetails extends AppCompatActivity {
@@ -149,7 +149,7 @@ public class ShowDetails extends AppCompatActivity {
         vmEpisodeList.getEpisodes().observe(this, episodeEntities -> {
             if (episodeEntities != null) {
                 episodeList = episodeEntities;
-                Collections.sort(episodeList);
+                episodeList.sort(Comparator.comparingInt(Episode::getNumber));
                 adapter.clear();
                 adapter.addAll(episodeList);
                 setListViewHeightBasedOnChildren(listview); // To stretch the listView dynamically, so it's not only showing the first object in the listview
